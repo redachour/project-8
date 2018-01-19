@@ -1,0 +1,15 @@
+{% extends "minerals/layout.html" %}
+
+
+{% block content %}
+    <div class="grid-75 grid-push-25">
+    <ul class="minerals__container">
+        {% for mineral in minerals %}
+            <li class="minerals__item">
+                <a class="minerals__anchor" href="{% url 'minerals:detail' pk=mineral.id %}">{{ mineral.name }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+    </div>
+    <div class="grid-25 grid-pull-75">
+{% endblock %}

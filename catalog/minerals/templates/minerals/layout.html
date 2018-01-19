@@ -1,0 +1,74 @@
+{% load static from staticfiles %}
+{% load mineral_extras %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Macky's Minerals: A magnificant catalog of minerals</title>
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href='https://fonts.googleapis.com/css?family=Work+Sans:400,500' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Cousine' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="{% static 'css/global.css' %}">
+</head>
+<body>
+<div class="bounds">
+    <div class="grid-100">
+        <a href="{% url 'minerals:index' %}">
+            <svg class="logo" viewBox="0 0 127.6 84.8" preserveAspectRation="xMinYMin meet">
+                <polygon points="42.7,84.8 49.6,79.4 40,62.5 51.2,43.5 51.2,43.5 25,0 0,55.6 "/>
+                <polygon class="logo--middle" points="52.9,79.5 52.9,79.5 84.8,80.1 59.7,35 43.3,62.4 "/>
+                <polygon points="127.6,61.4 127.6,61.4 110.3,13.5 110.3,13.5 70.3,48.1 70.3,48.1 88.3,80.5 95.3,81.4 95.3,81.4 "/>
+            </svg>
+            <h1 class="logo__name text-centered">Macky's Minerals</h1>
+        </a>
+        <p class="logo__text text-centered">They're not rocks!</p>
+    </div>
+    <div class="grid-100">
+        <div class="alpha__container">
+            <ul class="alpha__list">
+              {% alphabet as alphabet %}
+                {% for letter in alphabet %}
+                    <li><a {% if chosen in letter %}style="font-weight:bolder; font-size:larger;"{% endif %} href="{% url 'minerals:index' letter=letter %}">{{ letter }}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    <div class="grid-100">
+        <div class="content__container">
+
+                {% block content %}{% endblock %}
+                <div class="sidebar__container">
+                    <form class="search__form" action="{% url 'minerals:search' %}" method="GET">
+                        <input type="text" name="term" placeholder="Search by parameters...">
+                        <input class="search__button" type="submit" value="Search">
+                    </form>
+                    <div class="circle--filter circle--secondary--module">
+                        <h2><strong>Category</strong></h2>
+                        <ul class="circle--link--list">
+                          {% categories as categories %}
+                            {% for category in categories %}
+                                <li><a {% if category == chosen %}style="font-weight:bold;"{% endif %} href="{% url 'minerals:index' category=category %}">{{ category }}</a></li>
+                            {% endfor %}
+                        </ul>
+                        <h2><strong>Color</strong></h2>
+                        <ul class="circle--link--list">
+                          {% colors as colors %}
+                            {% for color in colors %}
+                                <li><a {% if color == chosen %}style="font-weight:bold;"{% endif %} href="{% url 'minerals:index' color=color %}">{{ color }}</a></li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="minerals__random">
+  {% random_mineral as pk %}
+  <a class="minerals__anchor" href="{% url 'minerals:detail' pk=pk %}">Show random mineral</a>
+</div>
+</body>
+</html>
